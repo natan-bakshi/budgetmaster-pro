@@ -3,7 +3,6 @@ import { User } from '@/entities/User';
 import { Category } from '@/entities/Category';
 import { CategoryInstance } from '@/entities/CategoryInstance';
 import { Household } from '@/entities/Household';
-import { MonthlyHistory } from '@/entities/MonthlyHistory';
 import { Transaction } from '@/entities/Transaction';
 import { Account } from '@/entities/Account';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
