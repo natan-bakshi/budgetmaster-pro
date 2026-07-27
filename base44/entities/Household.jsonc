@@ -17,10 +17,13 @@
   ],
   "rls": {
     "read": {
-      "id": "{{user.householdId}}"
+      "id": "{{user.data.householdId}}"
     },
-    "write": {
-      "id": "{{user.householdId}}"
+    "update": {
+      "id": "{{user.data.householdId}}"
+    },
+    "delete": {
+      "id": "{{user.data.householdId}}"
     }
   }
 }
