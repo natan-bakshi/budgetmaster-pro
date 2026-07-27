@@ -15,6 +15,7 @@ import LoadingSpinner from '@/components/budget/LoadingSpinner';
 import OverviewCards from "@/components/budget/OverviewCards";
 import CategoriesManager from "@/components/budget/CategoriesManager";
 import TimeCounter from "@/components/budget/TimeCounter";
+import { archiveCompletedMonths } from '@/lib/budget-history';
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
@@ -73,46 +74,9 @@ export default function Dashboard() {
 
       if (!shouldCheck) return;
 
-      const today = new Date();
-      if (today >= periodStart) {
-        const prevPeriodStart = new Date(periodStart);
-        prevPeriodStart.setMonth(prevPeriodStart.getMonth() - 1);
-        const prevPeriodStr = getBudgetPeriodString(prevPeriodStart).substring(0, 7);
-        
-        const prevMonthHistory = await MonthlyHistory.filter({ householdId, month: prevPeriodStr });
-        if (prevMonthHistory.length === 0) {
-          const prevMonthInstances = await CategoryInstance.filter({ 
-            householdId, 
-            month: prevPeriodStr 
-          });
-          
-          if (prevMonthInstances.length > 0) {
-            let totalIncome = 0;
-            let totalExpenses = 0;
-            const allCategories = await Category.filter({householdId});
-            const categoryMap = new Map(allCategories.map(c => [c.id, c]));
-
-            prevMonthInstances.forEach(inst => {
-              const category = categoryMap.get(inst.categoryId);
-              if (category) {
-                if (category.type === 'income') totalIncome += inst.currentAmount;
-                else totalExpenses += inst.currentAmount;
-              }
-            });
-            
-            await MonthlyHistory.create({
-              month: prevPeriodStr,
-              totalIncome,
-              totalExpenses,
-              balance: totalIncome - totalExpenses,
-              householdId,
-            });
-          }
-        }
-        
-        await User.updateMyUserData({ lastResetCheck: now.toISOString() });
-        await executeScheduledTransactions(householdId, resetDay);
-      }
+      await archiveCompletedMonths(householdId, currentPeriodStr.substring(0, 7), resetDay);
+      await User.updateMyUserData({ lastResetCheck: now.toISOString() });
+      await executeScheduledTransactions(householdId, resetDay);
     } catch (error) {
       console.error('Error during monthly reset check:', error);
     }

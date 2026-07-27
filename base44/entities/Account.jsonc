@@ -1,0 +1,35 @@
+{
+  "name": "Account",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "\u05e9\u05dd \u05d4\u05d7\u05e9\u05d1\u05d5\u05df"
+    },
+    "balance": {
+      "type": "number",
+      "description": "\u05d4\u05d9\u05ea\u05e8\u05d4 \u05d4\u05d4\u05ea\u05d7\u05dc\u05ea\u05d9\u05ea \u05e9\u05dc \u05d4\u05d7\u05e9\u05d1\u05d5\u05df"
+    },
+    "color": {
+      "type": "string",
+      "description": "\u05e6\u05d1\u05e2 \u05d6\u05d9\u05d4\u05d5\u05d9 \u05dc\u05d7\u05e9\u05d1\u05d5\u05df"
+    },
+    "householdId": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "balance",
+    "color",
+    "householdId"
+  ],
+  "rls": {
+    "read": {
+      "householdId": "{{user.householdId}}"
+    },
+    "write": {
+      "householdId": "{{user.householdId}}"
+    }
+  }
+}
