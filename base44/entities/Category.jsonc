@@ -39,10 +39,16 @@
   ],
   "rls": {
     "read": {
-      "householdId": "{{user.householdId}}"
+      "data.householdId": "{{user.data.householdId}}"
     },
-    "write": {
-      "householdId": "{{user.householdId}}"
+    "create": {
+      "data.householdId": "{{user.data.householdId}}"
+    },
+    "update": {
+      "data.householdId": "{{user.data.householdId}}"
+    },
+    "delete": {
+      "data.householdId": "{{user.data.householdId}}"
     }
   }
 }
